@@ -1,0 +1,150 @@
+{
+  "phases": [
+    {
+      "name": "Algorithmic",
+      "description": "Development of core algorithms and logic for the project",
+      "progress": 75,
+      "startDate": "2025-01-01",
+      "endDate": "2025-04-30",
+      "features": [
+        {
+          "name": "Data Processing",
+          "description": "Implement data processing pipelines",
+          "progress": 80,
+          "startDate": "2025-01-01",
+          "endDate": "2025-03-15",
+          "tasks": [
+            {
+              "name": "Data Ingestion",
+              "description": "Create system to ingest raw data",
+              "progress": 90,
+              "startDate": "2025-01-01",
+              "endDate": "2025-02-01",
+              "steps": [
+                {
+                  "name": "API Integration",
+                  "description": "Connect to external data APIs",
+                  "progress": 100,
+                  "startDate": "2025-01-01",
+                  "endDate": "2025-01-15"
+                },
+                {
+                  "name": "Data Validation",
+                  "description": "Implement data quality checks",
+                  "progress": 80,
+                  "startDate": "2025-01-16",
+                  "endDate": "2025-02-01"
+                }
+              ]
+            },
+            {
+              "name": "Data Transformation",
+              "description": "Transform data into usable format",
+              "progress": 70,
+              "startDate": "2025-02-02",
+              "endDate": "2025-03-15",
+              "steps": [
+                {
+                  "name": "Normalization",
+                  "description": "Normalize data structures",
+                  "progress": 75,
+                  "startDate": "2025-02-02",
+                  "endDate": "2025-02-20"
+                },
+                {
+                  "name": "Aggregation",
+                  "description": "Create data aggregates",
+                  "progress": 65,
+                  "startDate": "2025-02-21",
+                  "endDate": "2025-03-15"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Art",
+      "description": "Creation of visual assets and UI/UX design",
+      "progress": 60,
+      "startDate": "2025-03-01",
+      "endDate": "2025-06-30",
+      "features": [
+        {
+          "name": "UI Design",
+          "description": "Design user interface components",
+          "progress": 65,
+          "startDate": "2025-03-01",
+          "endDate": "2025-05-15",
+          "tasks": [
+            {
+              "name": "Wireframing",
+              "description": "Create initial wireframes",
+              "progress": 80,
+              "startDate": "2025-03-01",
+              "endDate": "2025-03-31",
+              "steps": [
+                {
+                  "name": "Layout Design",
+                  "description": "Design page layouts",
+                  "progress": 85,
+                  "startDate": "2025-03-01",
+                  "endDate": "2025-03-20"
+                },
+                {
+                  "name": "Component Design",
+                  "description": "Design reusable components",
+                  "progress": 75,
+                  "startDate": "2025-03-21",
+                  "endDate": "2025-03-31"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Delivery",
+      "description": "Final deployment and delivery of the project",
+      "progress": 20,
+      "startDate": "2025-05-01",
+      "endDate": "2025-08-31",
+      "features": [
+        {
+          "name": "Deployment",
+          "description": "Deploy application to production",
+          "progress": 25,
+          "startDate": "2025-05-01",
+          "endDate": "2025-07-31",
+          "tasks": [
+            {
+              "name": "Environment Setup",
+              "description": "Configure production environment",
+              "progress": 30,
+              "startDate": "2025-05-01",
+              "endDate": "2025-06-15",
+              "steps": [
+                {
+                  "name": "Server Configuration",
+                  "description": "Set up production servers",
+                  "progress": 35,
+                  "startDate": "2025-05-01",
+                  "endDate": "2025-05-20"
+                },
+                {
+                  "name": "Database Setup",
+                  "description": "Configure production database",
+                  "progress": 25,
+                  "startDate": "2025-05-21",
+                  "endDate": "2025-06-15"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
