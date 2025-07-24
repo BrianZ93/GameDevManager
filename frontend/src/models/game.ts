@@ -1,5 +1,5 @@
 import { Phase } from './phase'
-
+import { v4 as uuidv4 } from 'uuid';
 
 export enum Genre {
   RTS = 'RTS',
@@ -7,13 +7,15 @@ export enum Genre {
 
 export class Game {
   constructor(
-        public name: string,
-        public genre: Genre,
-        public phases: Phase[]
+      public id:string ,
+      public name: string,
+      public genre: Genre,
+      public phases: Phase[]
     )
     {
-        this.name = name
-        this.genre = genre
-        this.phases = phases
+      this.id = id ?? uuidv4();
+      this.name = name
+      this.genre = genre
+      this.phases = phases
     }
 }

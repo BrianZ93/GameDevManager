@@ -38,8 +38,18 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import SidebarMenu from 'src/components/SidebarMenu.vue';
+import { onBeforeMount } from 'vue';
+import { useGameStore } from 'src/stores/gameStore';
 
 const drawer = ref(false) // Needed for smooth grow/shrink behavior
 const miniState = ref(true)
+
+const gameStore = useGameStore();
+
+onBeforeMount(async () => {
+  if (gameStore.getPhases.length === 0) {
+    await gameStore.initializePhases();
+  }
+});
 
 </script>

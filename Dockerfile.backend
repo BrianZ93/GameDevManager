@@ -1,0 +1,19 @@
+FROM golang:1.24.5
+
+WORKDIR /app
+
+# Copy go module files and download dependencies
+COPY backend/go.mod backend/go.sum ./
+RUN go mod download
+
+# Install air for live reloading
+RUN go install github.com/air-verse/air@latest
+
+# Copy the rest of the application code
+COPY backend/ .
+
+# Initialize air config if not present
+RUN [ -f .air.toml ] || air init
+
+# Run air with config
+CMD ["air", "-c", ".air.toml"]

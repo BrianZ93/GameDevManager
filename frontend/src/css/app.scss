@@ -1,4 +1,9 @@
 // app global css in SCSS form
+body, .q-app, .q-item, .q-item-label, .text-h6, .q-badge {
+  color: $text-color;
+  font-family: 'Bondoni Moda SC';
+}
+
 .btn-accent {
   background-color: #00F5FF;
   color: #000;
@@ -10,11 +15,6 @@
 }
 
 .header-text {
-    color: $text-color;
-    font-family: 'Bondoni Moda SC';
-}
-
-.subheader-text {
     color: $text-color;
     font-family: 'Bondoni Moda SC';
 }
