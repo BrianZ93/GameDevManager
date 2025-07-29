@@ -1,19 +1,34 @@
-FROM golang:1.24.5
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install system dependencies including Go and gcc
+RUN apt-get update && apt-get install -y \
+  curl git gcc libc6-dev make wget unzip
+
+# Install Go
+ENV GO_VERSION=1.24.5
+RUN curl -LO https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz && \
+    tar -C /usr/local -xzf go${GO_VERSION}.linux-amd64.tar.gz && \
+    rm go${GO_VERSION}.linux-amd64.tar.gz
+
+# Add Go and Go bin to PATH
+ENV GOROOT=/usr/local/go
+ENV GOPATH=/go
+ENV PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+ENV CGO_ENABLED=1
 
 WORKDIR /app
 
-# Copy go module files and download dependencies
+# Install Air globally into GOPATH
+RUN go install github.com/air-verse/air@latest
+
+# Copy Go mod files and download dependencies
 COPY backend/go.mod backend/go.sum ./
 RUN go mod download
 
-# Install air for live reloading
-RUN go install github.com/air-verse/air@latest
-
-# Copy the rest of the application code
+# Copy the rest of the app
 COPY backend/ .
 
-# Initialize air config if not present
-RUN [ -f .air.toml ] || air init
-
-# Run air with config
+# Set the entrypoint to use air
 CMD ["air", "-c", ".air.toml"]

@@ -2,7 +2,7 @@ import { Game, Genre } from 'src/models/game';
 import { Phase, FeatureGroup, Feature, Task, Step, Status } from 'src/models/phase';
 
 // Serialize a Game object to JSON-compatible format
-export function serializeGame(game: Game): any {
+export function serializeGame(game: Game): Record<string, unknown> {
   return {
     name: game.name,
     genre: game.genre,
@@ -11,7 +11,7 @@ export function serializeGame(game: Game): any {
 }
 
 // Serialize a Phase object
-function serializePhase(phase: Phase): any {
+function serializePhase(phase: Phase): Record<string, unknown> {
   return {
     id: phase.id,
     name: phase.name,
@@ -25,7 +25,7 @@ function serializePhase(phase: Phase): any {
 }
 
 // Serialize a FeatureGroup object
-function serializeFeatureGroup(featureGroup: FeatureGroup): any {
+function serializeFeatureGroup(featureGroup: FeatureGroup): Record<string, unknown> {
   return {
     id: featureGroup.id,
     name: featureGroup.name,
@@ -39,7 +39,7 @@ function serializeFeatureGroup(featureGroup: FeatureGroup): any {
 }
 
 // Serialize a Feature object
-function serializeFeature(feature: Feature): any {
+function serializeFeature(feature: Feature): Record<string, unknown> {
   return {
     id: feature.id,
     name: feature.name,
@@ -53,7 +53,7 @@ function serializeFeature(feature: Feature): any {
 }
 
 // Serialize a Task object
-function serializeTask(task: Task): any {
+function serializeTask(task: Task): Record<string, unknown> {
   return {
     id: task.id,
     name: task.name,
@@ -67,7 +67,7 @@ function serializeTask(task: Task): any {
 }
 
 // Serialize a Step object
-function serializeStep(step: Step): any {
+function serializeStep(step: Step): Record<string, unknown> {
   return {
     id: step.id,
     name: step.name,
@@ -80,17 +80,17 @@ function serializeStep(step: Step): any {
 }
 
 // Deserialize JSON data to a Game object
-export function deserializeGame(data: any): Game {
+export function deserializeGame(data: Game): Game {
   return new Game(
-    data.id,
     data.name,
     data.genre as Genre,
-    data.phases.map(deserializePhase)
+    data.phases.map(deserializePhase),
+    data.id,
   );
 }
 
 // Deserialize a Phase object
-function deserializePhase(data: any): Phase {
+function deserializePhase(data: Phase): Phase {
   return new Phase(
     data.name,
     data.description,
@@ -104,7 +104,7 @@ function deserializePhase(data: any): Phase {
 }
 
 // Deserialize a FeatureGroup object
-function deserializeFeatureGroup(data: any): FeatureGroup {
+function deserializeFeatureGroup(data: FeatureGroup): FeatureGroup {
   return new FeatureGroup(
     data.name,
     data.description,
@@ -118,7 +118,7 @@ function deserializeFeatureGroup(data: any): FeatureGroup {
 }
 
 // Deserialize a Feature object
-function deserializeFeature(data: any): Feature {
+function deserializeFeature(data: Feature): Feature {
   return new Feature(
     data.name,
     data.description,
@@ -132,7 +132,7 @@ function deserializeFeature(data: any): Feature {
 }
 
 // Deserialize a Task object
-function deserializeTask(data: any): Task {
+function deserializeTask(data: Task): Task {
   return new Task(
     data.name,
     data.description,
@@ -146,7 +146,7 @@ function deserializeTask(data: any): Task {
 }
 
 // Deserialize a Step object
-function deserializeStep(data: any): Step {
+function deserializeStep(data: Step): Step {
   return new Step(
     data.name,
     data.description,

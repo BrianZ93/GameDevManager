@@ -82,7 +82,15 @@ export default defineConfig((/* ctx */) => {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#devserver
     devServer: {
-      // https: true,
+      https: false,
+      port: 9000,
+      proxy: {
+        '/api': {
+          target: 'http://go-backend:8000',
+          changeOrigin: true,
+          rewrite: path => path.replace(/^\/api/, ''),
+        },
+      },
       open: true // opens browser window automatically
     },
 

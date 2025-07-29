@@ -48,7 +48,7 @@ const gameStore = useGameStore();
 
 onBeforeMount(async () => {
   if (gameStore.getPhases.length === 0) {
-    await gameStore.initializePhases();
+    await gameStore.fetchGames();
   }
 });
 

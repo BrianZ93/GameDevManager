@@ -3,19 +3,18 @@ import { v4 as uuidv4 } from 'uuid';
 
 export enum Genre {
   RTS = 'RTS',
+  MMORPG = 'MMORPG',
 }
 
 export class Game {
+  public id: string;
+
   constructor(
-      public id:string ,
-      public name: string,
-      public genre: Genre,
-      public phases: Phase[]
-    )
-    {
-      this.id = id ?? uuidv4();
-      this.name = name
-      this.genre = genre
-      this.phases = phases
-    }
+    public name: string,
+    public genre: Genre,
+    public phases: Phase[] = [],
+    id?: string
+  ) {
+    this.id = id ?? uuidv4();
+  }
 }

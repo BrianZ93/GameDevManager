@@ -11,14 +11,10 @@ import (
 	"gorm.io/gorm"
 )
 
-// CREATE
-func CreateGame(c *gin.Context) {
-	var game models.Game
-	if err := c.ShouldBindJSON(&game); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
+// Helper function to assign UUID if one does not exist
+func assignUUIDsToGame(game *models.Game) {
 	game.ID = uuid.New()
+
 	for i := range game.Phases {
 		game.Phases[i].ID = uuid.New()
 		for j := range game.Phases[i].FeatureGroups {
@@ -34,10 +30,27 @@ func CreateGame(c *gin.Context) {
 			}
 		}
 	}
-	if err := db.DB.Create(&game).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create game"})
+}
+
+// CREATE
+func CreateGame(c *gin.Context) {
+	var game models.Game
+
+	// Bind JSON to game model
+	if err := c.ShouldBindJSON(&game); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid game format: " + err.Error()})
 		return
 	}
+
+	// Assign UUIDs to game and all nested children
+	assignUUIDsToGame(&game)
+
+	// Persist to DB
+	if err := db.DB.Create(&game).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create game: " + err.Error()})
+		return
+	}
+
 	c.JSON(http.StatusCreated, game)
 }
 

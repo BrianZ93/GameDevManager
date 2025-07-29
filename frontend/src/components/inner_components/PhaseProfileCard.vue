@@ -94,9 +94,9 @@ const getProgressColor = (progress: number): string => {
 onMounted(async () => {
 
   if (gameStore.getPhases.length === 0) {
-    await gameStore.initializePhases();
-
+    await gameStore.fetchGames();
   }
+
   console.log(features.value)
   console.log(phase.value)
 

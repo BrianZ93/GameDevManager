@@ -18,7 +18,6 @@ export const useGameStore = defineStore('game', {
       try {
         const response = await getGames();
         this.games = response.data;
-        console.log('Games fetched:', this.games);
       } catch (error) {
         console.error('Failed to fetch games:', error);
         this.games = [];

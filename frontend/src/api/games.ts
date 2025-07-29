@@ -3,7 +3,7 @@ import { Game } from 'src/models/game';
 
 export const getGames = () => api.get<Game[]>('/games');
 export const getGameById = (id: string) => api.get<Game>(`/games/${id}`);
-export const createGame = (game: Game) => api.post<Game>('/games', game);
+export const createGameRequest = (game: Record<string, unknown>) => api.post<Game>('/games/create', game);
 export const updateGame = (id: string, game: Game) => api.put<Game>(`/games/${id}`, game);
 export const deleteGame = (id: string) => api.delete(`/games/${id}`);
 
