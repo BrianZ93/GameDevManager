@@ -47,7 +47,7 @@ const miniState = ref(true)
 const gameStore = useGameStore();
 
 onBeforeMount(async () => {
-  if (gameStore.getPhases.length === 0) {
+  if (gameStore.getGames.length === 0) {
     await gameStore.fetchGames();
   }
 });

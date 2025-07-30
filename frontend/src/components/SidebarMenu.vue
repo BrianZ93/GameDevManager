@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, watch, onMounted } from 'vue';
 import { usePageManagerStore } from '../stores/PageManagerStore';
 import type { SidebarPage } from '../stores/PageManagerStore';
 import { useRouter } from 'vue-router';
@@ -40,6 +40,11 @@ const sidebarItems = computed(() => [
     route: '/',
   },
   {
+    label: 'Games' as SidebarPage,
+    icon: 'sports_esports',
+    route: '/games',
+  },
+  {
     label: 'Phases' as SidebarPage,
     icon: 'star',
     route: '/phases',
@@ -52,15 +57,50 @@ const sidebarItems = computed(() => [
 ]);
 
 const isActive = (label: SidebarPage) => {
-  return pageStore.isActive(label);
+  const currentRoute = router.currentRoute.value;
+  const item = sidebarItems.value.find(item => item.label === label);
+  
+  if (!item) return false;
+  
+  // Exact match for root path
+  if (item.route === '/' && currentRoute.path === '/') {
+    return true;
+  }
+  // For other routes, check if the path starts with the route
+  if (item.route !== '/' && currentRoute.path.startsWith(item.route)) {
+    return true;
+  }
+  
+  return false;
 };
 
-// Handle navigation and update active page
-router.afterEach((to) => {
-  const label = sidebarItems.value.find(item => item.route === to.path)?.label;
+// Function to update active page based on current route
+const updateActivePage = (path: string) => {
+  const label = sidebarItems.value.find(item => {
+    // Exact match for root path
+    if (item.route === '/' && path === '/') {
+      return true;
+    }
+    // For other routes, check if the path starts with the route
+    if (item.route !== '/' && path.startsWith(item.route)) {
+      return true;
+    }
+    return false;
+  })?.label;
+  
   if (label) {
     pageStore.setActivePage(label);
   }
+};
+
+// Watch for route changes
+watch(() => router.currentRoute.value.path, (newPath) => {
+  updateActivePage(newPath);
+}, { immediate: true });
+
+// Initialize active page on mount
+onMounted(() => {
+  updateActivePage(router.currentRoute.value.path);
 });
 </script>
 

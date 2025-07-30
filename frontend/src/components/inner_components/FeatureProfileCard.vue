@@ -1,5 +1,5 @@
 <template>
-  <q-card class="q-pa-md bg-primary" style="width: 100%; min-height: 90vh;">
+  <q-card class="q-pa-md bg-primary" style="width: 100vw; min-height: 90vh;">
     <q-list bordered padding>
       <q-item>
         <q-item-section>
@@ -15,7 +15,7 @@
       <q-separator spaced />
       <q-item-label header style="color:white">Tasks</q-item-label>
 
-      <q-scroll-area style="height: 72vh; width: 100%">
+      <q-scroll-area style="height: 72vh; width: 100vw">
         <q-item v-for="task in tasks" :key="task.id">
           <q-item-section top avatar>
             <q-icon

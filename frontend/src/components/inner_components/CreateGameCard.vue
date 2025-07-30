@@ -16,7 +16,7 @@ const emit = defineEmits<{
 
 <style scoped lang="scss">
 .create-game-card {
-  width: 30vw;
+  width: 25vw;
   height: 50vh;
   cursor: pointer;
   transition: box-shadow 0.3s ease, transform 0.3s ease;

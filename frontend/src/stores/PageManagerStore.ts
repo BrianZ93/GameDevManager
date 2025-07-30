@@ -2,6 +2,7 @@ import { defineStore, acceptHMRUpdate } from 'pinia';
 
 export enum SidebarPage {
   Dashboard = 'Dashboard',
+  Games = 'Games',
   Phases = 'Phases',
   Tasks = 'Tasks',
   Drafts = 'Drafts',
@@ -16,6 +17,7 @@ export class SidebarItem {
 
 const sidebarItemsConfig: SidebarItem[] = [
   new SidebarItem(SidebarPage.Dashboard, 'dashboard'),
+  new SidebarItem(SidebarPage.Games, 'sports_esports'),
   new SidebarItem(SidebarPage.Phases, 'calendar_view_week'),
   new SidebarItem(SidebarPage.Tasks, 'format_list_bulleted'),
   new SidebarItem(SidebarPage.Drafts, 'drafts'),

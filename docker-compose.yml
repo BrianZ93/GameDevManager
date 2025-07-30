@@ -1,4 +1,23 @@
 services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: game-dev-postgres
+    environment:
+      POSTGRES_DB: gamedev
+      POSTGRES_USER: gamedev
+      POSTGRES_PASSWORD: gamedev123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gamedev -d gamedev"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   backend:
     build:
       context: .
@@ -9,14 +28,59 @@ services:
       - "8000:8000"
     environment:
       - CGO_ENABLED=1
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=gamedev
+      - DB_PASSWORD=gamedev123
+      - DB_NAME=gamedev
+      - DB_SSLMODE=disable
+    volumes:
+      # Use bind mount for better Windows performance
+      - type: bind
+        source: ./backend
+        target: /app
+        consistency: delegated
+    depends_on:
+      postgres:
+        condition: service_healthy
     develop:
       watch:
         - action: sync
-          path: ./backend
-          target: /app
+          path: ./backend/controllers
+          target: /app/controllers
           ignore:
-            - tmp/
-            - .git/
+            - "*.log"
+            - "*.tmp"
+            - "*.swp"
+            - "*.swo"
+        - action: sync
+          path: ./backend/models
+          target: /app/models
+          ignore:
+            - "*.log"
+            - "*.tmp"
+            - "*.swp"
+            - "*.swo"
+        - action: sync
+          path: ./backend/routes
+          target: /app/routes
+          ignore:
+            - "*.log"
+            - "*.tmp"
+            - "*.swp"
+            - "*.swo"
+        - action: sync
+          path: ./backend/database
+          target: /app/database
+          ignore:
+            - "*.log"
+            - "*.tmp"
+            - "*.swp"
+            - "*.swo"
+            - data/
+        - action: sync
+          path: ./backend/main.go
+          target: /app/main.go
         - action: rebuild
           path: ./backend/go.mod
         - action: rebuild
@@ -34,15 +98,34 @@ services:
       - "9000:9000"
     environment:
       - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - CHOKIDAR_INTERVAL=3000
+      - CHOKIDAR_IGNORED=node_modules,dist,.git,*.log,*.tmp,*.cache,.DS_Store,Thumbs.db
+      - CHOKIDAR_USE_POLLING=true
+      - CHOKIDAR_POLL=3000
+    volumes:
+      # Use bind mount for better Windows performance
+      - type: bind
+        source: ./frontend
+        target: /app
+        consistency: delegated
     develop:
       watch:
         - action: sync
-          path: ./frontend
-          target: /app
+          path: ./frontend/src
+          target: /app/src
           ignore:
-            - node_modules/
-            - dist/
-            - .git/
+            - "*.log"
+            - "*.tmp"
+            - "*.swp"
+            - "*.swo"
+            - "*.cache"
+        - action: sync
+          path: ./frontend/public
+          target: /app/public
+          ignore:
+            - "*.log"
+            - "*.tmp"
         - action: rebuild
           path: ./frontend/package.json
         - action: rebuild
@@ -50,6 +133,9 @@ services:
     networks:
       - app-network
 
+volumes:
+  postgres_data:
+
 networks:
   app-network:
-    driver: bridge
+    driver: bridge 

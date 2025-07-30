@@ -1,0 +1,96 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: game-dev-postgres
+    environment:
+      POSTGRES_DB: gamedev
+      POSTGRES_USER: gamedev
+      POSTGRES_PASSWORD: gamedev123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gamedev -d gamedev"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: go-backend
+    working_dir: /app
+    ports:
+      - "8000:8000"
+    environment:
+      - CGO_ENABLED=1
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=gamedev
+      - DB_PASSWORD=gamedev123
+      - DB_NAME=gamedev
+      - DB_SSLMODE=disable
+    volumes:
+      # Use bind mount for better Windows performance
+      - type: bind
+        source: ./backend
+        target: /app
+        consistency: cached
+    depends_on:
+      postgres:
+        condition: service_healthy
+    develop:
+      watch:
+        - action: sync
+          path: ./backend
+          target: /app
+          ignore:
+            - tmp/
+            - .git/
+            - app.db
+            - "*.log"
+            - "*.tmp"
+            - "*.swp"
+            - "*.swo"
+            - "*.exe"
+            - "*.test"
+        - action: rebuild
+          path: ./backend/go.mod
+        - action: rebuild
+          path: ./backend/go.sum
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: quasar-frontend
+    working_dir: /app
+    ports:
+      - "9000:9000"
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - CHOKIDAR_INTERVAL=2000
+      - CHOKIDAR_IGNORED=node_modules,dist,.git,*.log,*.tmp
+    volumes:
+      # Use bind mount for better Windows performance
+      - type: bind
+        source: ./frontend
+        target: /app
+        consistency: cached
+    # No develop/watch section - relies on Quasar's built-in file watching
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge 

@@ -2,9 +2,9 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install system dependencies including Go and gcc
+# Install system dependencies including Go, gcc, and PostgreSQL client
 RUN apt-get update && apt-get install -y \
-  curl git gcc libc6-dev make wget unzip
+  curl git gcc libc6-dev make wget unzip libpq-dev
 
 # Install Go
 ENV GO_VERSION=1.24.5

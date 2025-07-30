@@ -61,6 +61,7 @@ func GetGames(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch games"})
 		return
 	}
+
 	c.JSON(http.StatusOK, games)
 }
 
